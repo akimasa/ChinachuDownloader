@@ -21,23 +21,18 @@ import javax.net.ssl.HandshakeCompletedListener;
  * Created by akimasa on 16/07/10.
  */
 public class ProgressHandler extends Handler {
-    public AsyncFileLoader _fileLoader;
-    public Handler _progressHandler;
-    public ProgressBar progress;
-    public Context _context;
-    ProgressHandler( AsyncFileLoader fileLoader,Handler progressHandler, ProgressBar bar, Context ctx){
-        this._fileLoader = fileLoader;
-        this._progressHandler = progressHandler;
-        this.progress = bar;
-        this._context = ctx;
+
+    Hoge _hoge;
+    ProgressHandler(Hoge hoge){
+        _hoge = hoge;
     }
 
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        if (_fileLoader.isCancelled()) {
+        if (_hoge._fileLoader.isCancelled()) {
             //_progressDialog.dismiss();
             Log.d("DL", "load canceled");
-        } else if (_fileLoader.getStatus() == AsyncTask.Status.FINISHED) {
+        } else if (_hoge._fileLoader.getStatus() == AsyncTask.Status.FINISHED) {
             //_progressDialog.dismiss();
             Log.d("DL", "load finished");
             /** Create an intent that will be fired when the user clicks the notification.
@@ -46,14 +41,14 @@ public class ProgressHandler extends Handler {
              */
             //Intent intent = new Intent(Intent.ACTION_VIEW,
             //        Uri.parse("http://developer.android.com/reference/android/app/Notification.html"));
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///storage/emulated/0"+_fileLoader.outFileName));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///storage/emulated/0"+_hoge._fileLoader.outFileName));
             intent.setComponent(new ComponentName("org.videolan.vlc", "org.videolan.vlc.gui.video.VideoPlayerActivity"));
-            PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(_hoge._context, 0, intent, 0);
 
             /**
              * Use NotificationCompat.Builder to set up our notification.
              */
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(_context);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(_hoge._context);
 
             /** Set the icon that will appear in the notification bar. This icon also appears
              * in the lower right hand corner of the notification itself.
@@ -78,7 +73,7 @@ public class ProgressHandler extends Handler {
              * sample we'll set the large icon to be the same as our app icon. The app icon is a
              * reasonable default if you don't have anything more compelling to use as an icon.
              */
-            builder.setLargeIcon(BitmapFactory.decodeResource(_context.getResources(), R.drawable.c));
+            builder.setLargeIcon(BitmapFactory.decodeResource(_hoge._context.getResources(), R.drawable.c));
 
             /**
              * Set the text of the notification. This sample sets the three most commononly used
@@ -91,7 +86,7 @@ public class ProgressHandler extends Handler {
              */
             builder.setContentTitle("Load finished");
             builder.setContentText("hogee");
-            builder.setSubText(_fileLoader.fullTitle);
+            builder.setSubText(_hoge._fileLoader.fullTitle);
 
             builder.setDefaults(Notification.DEFAULT_LIGHTS|Notification.DEFAULT_SOUND);
 
@@ -100,14 +95,14 @@ public class ProgressHandler extends Handler {
              * Send the notification. This will immediately display the notification icon in the
              * notification bar.
              */
-            NotificationManager notificationManager = (NotificationManager) _context.getSystemService(
-                    _context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) _hoge._context.getSystemService(
+                    _hoge._context.NOTIFICATION_SERVICE);
             notificationManager.notify(1, builder.build());
         } else {
             //_progressDialog.setProgress(_fileLoader.getLoadedBytePercent());
-            Log.d("DL", Integer.toString(_fileLoader.getLoadedBytePercent()));
-            progress.setProgress(_fileLoader.getLoadedBytePercent());
-            _progressHandler.sendEmptyMessageDelayed(0, 250);
+            Log.d("DL", Integer.toString(_hoge._fileLoader.getLoadedBytePercent()));
+            _hoge.progress.setProgress(_hoge._fileLoader.getLoadedBytePercent());
+            _hoge._progressHandler.sendEmptyMessageDelayed(0, 250);
         }
     }
 }
