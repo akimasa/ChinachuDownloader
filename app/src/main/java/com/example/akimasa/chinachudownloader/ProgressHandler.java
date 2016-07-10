@@ -21,15 +21,15 @@ import javax.net.ssl.HandshakeCompletedListener;
  * Created by akimasa on 16/07/10.
  */
 public class ProgressHandler extends Handler {
-    private AsyncFileLoader _fileLoader;
-    private Handler _progressHandler;
-    private ProgressBar progress;
-    private Context _context;
+    public AsyncFileLoader _fileLoader;
+    public Handler _progressHandler;
+    public ProgressBar progress;
+    public Context _context;
     ProgressHandler( AsyncFileLoader fileLoader,Handler progressHandler, ProgressBar bar, Context ctx){
-        _fileLoader = fileLoader;
-        _progressHandler = progressHandler;
-        progress = bar;
-        _context = ctx;
+        this._fileLoader = fileLoader;
+        this._progressHandler = progressHandler;
+        this.progress = bar;
+        this._context = ctx;
     }
 
     public void handleMessage(Message msg) {
