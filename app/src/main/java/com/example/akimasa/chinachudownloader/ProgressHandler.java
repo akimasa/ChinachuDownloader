@@ -23,8 +23,10 @@ import javax.net.ssl.HandshakeCompletedListener;
 public class ProgressHandler extends Handler {
 
     Hoge _hoge;
-    ProgressHandler(Hoge hoge){
+    DownloadFiles _downloadFiles;
+    ProgressHandler(Hoge hoge, DownloadFiles downloadFiles){
         _hoge = hoge;
+        _downloadFiles = downloadFiles;
     }
 
     public void handleMessage(Message msg) {
@@ -35,6 +37,7 @@ public class ProgressHandler extends Handler {
         } else if (_hoge._fileLoader.getStatus() == AsyncTask.Status.FINISHED) {
             //_progressDialog.dismiss();
             Log.d("DL", "load finished");
+            _downloadFiles.downNext();
             /** Create an intent that will be fired when the user clicks the notification.
              * The intent needs to be packaged into a {@link android.app.PendingIntent} so that the
              * notification service can fire it on our behalf.

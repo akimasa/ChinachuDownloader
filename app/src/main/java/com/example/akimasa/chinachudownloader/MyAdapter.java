@@ -36,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by akimasa on 16/07/10.
@@ -55,6 +56,7 @@ public class MyAdapter extends BaseAdapter {
     }
 
     Hoge hoge = new Hoge();
+    DownloadFiles q = new DownloadFiles();
     public MyAdapter(Context context, List<Record> _list, SharedPreferences _sp) {
 
         // インフレーターを取得する
@@ -125,11 +127,7 @@ public class MyAdapter extends BaseAdapter {
             }
         });
 
-        hoge._context = _context;
-        hoge._fileLoader = _fileLoader;
-        hoge._progressHandler = _progressHandler;
-        hoge.progress = progress;
-        _progressHandler = new ProgressHandler(hoge);
+
 
 
         return convertView;
@@ -155,21 +153,27 @@ public class MyAdapter extends BaseAdapter {
         String password = sp.getString("password",null);
         byte[] auth = (user+":"+password).getBytes();
         String authstr = Base64.encodeToString(auth, Base64.DEFAULT);
-
-        hoge._fileLoader = new AsyncFileLoader("http://"+host+":"+port+"/api/recorded/"+list.get(position).id+"/file", outputFile, authstr);
+        Hoge hclone;
+        try {
+            hclone = hoge.clone();
+        } catch (Exception ex) {
+            Log.d("cloneex", ex.toString());
+            return;
+        }
+        hclone._fileLoader = new AsyncFileLoader("http://"+host+":"+port+"/api/recorded/"+list.get(position).id+"/file", outputFile, authstr);
         final View vu = v;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+
                 Log.d("onclick","exec run");
-                hoge.progress = (ProgressBar) vu.getRootView().findViewById(R.id.progressBar2);
-                hoge.progress.setMax(100);
-                hoge.progress.setProgress(0);
-                hoge._fileLoader.fullTitle = list.get(position).fullTitle;
-                hoge._fileLoader.outFileName = "/Download/"+list.get(position).id+list.get(position).fullTitle+".ts";
-                hoge._fileLoader.execute();
-                hoge._progressHandler.sendEmptyMessage(0);
-            }
-        }).start();
+                hclone.progress = (ProgressBar) vu.getRootView().findViewById(R.id.progressBar2);
+                hclone.progress.setMax(100);
+                hclone.progress.setProgress(0);
+                hclone._fileLoader.fullTitle = list.get(position).fullTitle;
+                hclone._fileLoader.outFileName = "/Download/"+list.get(position).id+list.get(position).fullTitle+".ts";
+
+                hclone._context = _context;
+                hclone._progressHandler = new ProgressHandler(hclone,q);
+
+                q.addQ(hclone);
+
     }
 }
