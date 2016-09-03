@@ -162,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     recs.add(new Record(json.getJSONObject(i).getString("fullTitle"),
                                             json.getJSONObject(i).getJSONObject("channel").getString("name"),
-                                            json.getJSONObject(i).getString("id")));
+                                            json.getJSONObject(i).getString("id"),
+                                            json.getJSONObject(i).getLong("start")));
 
 
                                 } catch (Exception ex) {

@@ -88,8 +88,8 @@ public class ProgressHandler extends Handler {
              *    anything vital!
              */
             builder.setContentTitle("Load finished");
-            builder.setContentText("hogee");
-            builder.setSubText(_hoge._fileLoader.fullTitle);
+            builder.setContentText(_hoge._fileLoader.fullTitle);
+            //builder.setSubText(_hoge._fileLoader.fullTitle);
 
             builder.setDefaults(Notification.DEFAULT_LIGHTS|Notification.DEFAULT_SOUND);
 

@@ -52,6 +52,7 @@ public class MyAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView textView;
+        TextView date;
         TextView textView2;
     }
 
@@ -96,6 +97,7 @@ public class MyAdapter extends BaseAdapter {
             // ホルダークラスを生成する
             holder = new ViewHolder();
             holder.textView = (TextView) convertView.findViewById(R.id.textView);
+            holder.date = (TextView) convertView.findViewById(R.id.date);
             holder.textView2 = (TextView) convertView.findViewById(R.id.textView2);
 
 
@@ -109,6 +111,7 @@ public class MyAdapter extends BaseAdapter {
         }
 
         holder.textView.setText(list.get(position).fullTitle);
+        holder.date.setText(list.get(position).start);
         holder.textView2.setText(list.get(position).channelName);
 
 
