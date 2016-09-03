@@ -24,8 +24,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     android.content.Context ctx;
     boolean adaptercalled = false;
     private final MainActivity self = this;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,19 +70,68 @@ public class MainActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         //mSwipeRefreshLayout.setColorScheme(R.color.red, R.color.green, R.color.blue, R.color.yellow);
 
+        ListView listview = (ListView) findViewById(R.id.listView);
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                view.setFocusable(true);
+                view.setFocusableInTouchMode(true);
+                view.requestFocus();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
 
         ctx = this;
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-
-
-
-                //Intent intent = new Intent(getApplication(),SettingsActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplication(),SettingsActivity.class);
+                startActivity(intent);
             }
         });
 
+        Button button2 = (Button) findViewById(R.id.button2);
+
+
+
+
+        final EditText edit = (EditText) findViewById(R.id.editText);
+        edit.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                edit.setFocusable(true);
+                edit.setFocusableInTouchMode(true);
+                edit.requestFocus();
+                /*
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edit,0);
+                */
+
+            }
+        });
+        edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(hasFocus == true){
+                    imm.showSoftInput(edit,0);
+                } else {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        });
+
+        final CharSequence title = edit.getText();
+        button2.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getApplication(),SearchActivity.class);
+                intent.putExtra("title",title);
+                startActivity(intent);
+            }
+        });
 
     }
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
@@ -104,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         SetView();
 
     }
-    private void SetView(){
+    protected void SetView(){
 
 
 

@@ -7,14 +7,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.akimasa.chinachudownloader.MainActivity">
+    tools:context="com.example.akimasa.chinachudownloader.MainActivity"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button">
+        android:layout_above="@+id/editText"
+        android:focusable="false"
+        android:focusableInTouchMode="false">
 
     <ListView
         android:layout_width="wrap_content"
@@ -36,6 +40,30 @@
         android:text="New Button"
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <requestFocus />
+    </Button>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/button"
+        android:hint="string to search"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="text" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/button2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/refresh" />
 
 </RelativeLayout>

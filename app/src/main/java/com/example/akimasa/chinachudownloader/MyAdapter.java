@@ -129,6 +129,19 @@ public class MyAdapter extends BaseAdapter {
 
             }
         });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                        Intent intent = new Intent(_context,SearchActivity.class);
+                        String title = list.get(position).fullTitle;
+                        title = title.split("　|「| ")[0];
+                        Log.d("LongClickTitle",title);
+                        intent.putExtra("title",title);
+                        _context.startActivity(intent);
+
+                return false;
+            }
+        });
 
 
 
