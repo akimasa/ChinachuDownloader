@@ -1,24 +1,39 @@
 package com.example.akimasa.chinachudownloader;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by akimasa on 16/09/04.
  */
 public class SearchGetURL extends GetURL{
-    MainActivity that;
+    SearchActivity that;
     CharSequence title;
-    public SearchGetURL(MainActivity _that,CharSequence _title) {
+    public SearchGetURL(SearchActivity _that,CharSequence _title) {
         this.that = _that;
         this.title = _title;
+        this.ctx = _that.ctx;
+        this.activity = (Activity) _that;
+        this.adaptercalled = _that.adaptercalled;
+        this.mSwipeRefreshLayout = _that.mSwipeRefreshLayout;
         Log.d("SearchGetURL",title.toString());
     }
+
+
     @Override
     protected void AddSomething(JSONArray json, List<Record> recs){
+        Log.d("AddSomething",json.toString());
         for (int i = 0; i < json.length(); i++) {
             //Log.d("array item",json.getJSONObject(i).getString("fullTitle"));
             //Log.d("array ch",json.getJSONObject(i).getJSONObject("channel").getString("name"));

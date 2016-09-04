@@ -1,5 +1,6 @@
 package com.example.akimasa.chinachudownloader;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,23 +29,31 @@ public class GetURL implements Runnable {
     android.content.Context ctx;
     SwipeRefreshLayout mSwipeRefreshLayout;
     */
+    android.content.Context ctx;
     MainActivity that;
+    Activity activity;
+    boolean adaptercalled;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     public GetURL() {
 
     }
     public GetURL(MainActivity _that) {
         this.that = _that;
+        this.ctx = _that.ctx;
+        this.activity = (Activity) _that;
+        this.adaptercalled = _that.adaptercalled;
+        this.mSwipeRefreshLayout = _that.mSwipeRefreshLayout;
         /*
         this.adaptercalled = _adaptercalled;
         this.ctx = _ctx;
         this.mSwipeRefreshLayout = _mSwipeRefreshLayout;
         */
     }
-    @Override
+
     public void run(){
 
         try {
-            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(that);
+            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.ctx);
             //Log.d("pref",sp.getString("host",null));
             String host = sp.getString("host",null);
             String port = sp.getString("port",null);
@@ -62,14 +71,14 @@ public class GetURL implements Runnable {
             Log.d("HTTP", str);
             final JSONArray json = new JSONArray(str);
             final List<Record> recs = new ArrayList<Record>();
-            that.runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    MyAdapter adapter = new MyAdapter(that, recs, sp);
-                    if(!that.adaptercalled) {
-                        ListView listView = (ListView) that.findViewById(R.id.listView);
+                    MyAdapter adapter = new MyAdapter(ctx, recs, sp);
+                    if(!adaptercalled) {
+                        ListView listView = (ListView) activity.findViewById(R.id.listView);
                         listView.setAdapter(adapter);
-                        that.adaptercalled = true;
+                        adaptercalled = true;
                         Log.d("hoge","adapter first time call");
                     }
                     //Log.d("json", json.length()+"");
@@ -79,7 +88,7 @@ public class GetURL implements Runnable {
                     */
                     AddSomething(json,recs);
 
-                    that.mSwipeRefreshLayout.setRefreshing(false);
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
 
