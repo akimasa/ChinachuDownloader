@@ -53,6 +53,7 @@ public class MyAdapter extends BaseAdapter {
     class ViewHolder {
         TextView textView;
         TextView date;
+        TextView id;
         TextView textView2;
     }
 
@@ -98,6 +99,7 @@ public class MyAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textView = (TextView) convertView.findViewById(R.id.textView);
             holder.date = (TextView) convertView.findViewById(R.id.date);
+            holder.id = (TextView) convertView.findViewById(R.id.id);
             holder.textView2 = (TextView) convertView.findViewById(R.id.textView2);
 
 
@@ -112,6 +114,7 @@ public class MyAdapter extends BaseAdapter {
 
         holder.textView.setText(list.get(position).fullTitle);
         holder.date.setText(list.get(position).start);
+        holder.id.setText(list.get(position).id);
         holder.textView2.setText(list.get(position).channelName);
 
 
