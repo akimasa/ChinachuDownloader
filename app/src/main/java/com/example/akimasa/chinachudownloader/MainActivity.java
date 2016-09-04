@@ -2,58 +2,17 @@ package com.example.akimasa.chinachudownloader;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import android.support.v7.view.menu.ExpandedMenuView;
-import android.support.v7.widget.ButtonBarLayout;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-
-import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     android.content.Context ctx;
@@ -105,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 edit.setFocusable(true);
                 edit.setFocusableInTouchMode(true);
                 edit.requestFocus();
-                /*
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(edit,0);
-                */
-
             }
         });
         edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -137,17 +91,6 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            // 3秒待機
-            /*
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    SetView();
-                }
-            }, 3000);
-            */
-            //mSwipeRefreshLayout.setRefreshing(false);
             SetView();
         }
     };
@@ -158,9 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SetView(){
-
-
-
         new Thread(new GetURL(this)).start();
     }
 

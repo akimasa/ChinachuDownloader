@@ -117,19 +117,10 @@ public class MyAdapter extends BaseAdapter {
         holder.id.setText(list.get(position).id);
         holder.textView2.setText(list.get(position).channelName);
 
-
-
-        //progress = (ProgressBar) convertView.findViewById(R.id.progressBar);
-        //progress = holder.progressBar;
-
-
-
         convertView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 download(v, position);
-
-
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -145,22 +136,10 @@ public class MyAdapter extends BaseAdapter {
                 return false;
             }
         });
-
-
-
-
         return convertView;
     }
 
     private void download(View v, final int position) {
-        //new AlertDialog.Builder(v.getContext()).setMessage(list.get(position).id).show();
-                /*
-                Uri uri = Uri.parse("http://akari:bakuhatsu@192.168.0.23:10772/api/recorded/"+list.get(position).id+"/file.m2ts");
-                Intent i = new Intent(Intent.ACTION_VIEW,uri);
-                i.setComponent(new ComponentName("org.mozilla.firefox", "org.mozilla.firefox.App"));
-                v.getContext().startActivity(i);
-                */
-
         File dataDirectory = Environment.getExternalStorageDirectory();
         File directory = new File(dataDirectory.getAbsolutePath() + "/Download");
         File outputFile = new File(directory, list.get(position).id+list.get(position).fullTitle+".ts");

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.widget.ListView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,11 +23,7 @@ import java.util.List;
  * Created by akimasa on 16/09/04.
  */
 public class GetURL implements Runnable {
-    /*
-    boolean adaptercalled;
-    android.content.Context ctx;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    */
+
     android.content.Context ctx;
     MainActivity that;
     Activity activity;
@@ -43,18 +38,13 @@ public class GetURL implements Runnable {
         this.activity = (Activity) _that;
         this.adaptercalled = _that.adaptercalled;
         this.mSwipeRefreshLayout = _that.mSwipeRefreshLayout;
-        /*
-        this.adaptercalled = _adaptercalled;
-        this.ctx = _ctx;
-        this.mSwipeRefreshLayout = _mSwipeRefreshLayout;
-        */
+
     }
 
     public void run(){
 
         try {
             final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.ctx);
-            //Log.d("pref",sp.getString("host",null));
             String host = sp.getString("host",null);
             String port = sp.getString("port",null);
             String user = sp.getString("user",null);
@@ -65,7 +55,6 @@ public class GetURL implements Runnable {
             byte[] auth = (user+":"+password).getBytes();
             String authstr = android.util.Base64.encodeToString(auth, Base64.DEFAULT);
             Log.d("BASE64",authstr);
-            //con.addRequestProperty("Authorization", "Basic YWthcmk6YmFrdWhhdHN1");
             con.addRequestProperty("Authorization", "Basic "+authstr);
             String str = InputStreamToString(con.getInputStream());
             Log.d("HTTP", str);
@@ -81,49 +70,19 @@ public class GetURL implements Runnable {
                         adaptercalled = true;
                         Log.d("hoge","adapter first time call");
                     }
-                    //Log.d("json", json.length()+"");
-                    /*
-                    // ListView に表示する文字列を生成
-                    final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-                    */
+
                     AddSomething(json,recs);
 
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
 
-
-
-                    /*
-                    // ListView に設定するデータ (アダプタ) を生成する (テキスト 2 行表示リスト)
-                    final SimpleAdapter adapter = new SimpleAdapter(
-                            that,
-                            list,
-                            android.R.layout.simple_list_item_2,
-                            new String[] {"main", "sub"},
-                            new int[] {android.R.id.text1, android.R.id.text2}
-                    );
-
-
-                    final ListView listView = (ListView) findViewById(R.id.listView);
-                    listView.setAdapter(adapter);
-                    */
         } catch(Exception ex) {
             Log.d("ex", ex.toString());
         }
     }
     protected void AddSomething(JSONArray json, List<Record> recs){
         for (int i = 0; i < json.length(); i++) {
-            //Log.d("array item",json.getJSONObject(i).getString("fullTitle"));
-            //Log.d("array ch",json.getJSONObject(i).getJSONObject("channel").getString("name"));
-            //Log.d("array id",json.getJSONObject(i).getString("id"));
-            //http://skylark-host.local:10772/api/recorded/gr1048-5wd/file.m2ts
-                        /*
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("main", json.getJSONObject(i).getString("fullTitle"));
-                        map.put("sub", json.getJSONObject(i).getString("id"));
-                        list.add(map);
-                        */
             try {
                 recs.add(new Record(json.getJSONObject(i).getString("fullTitle"),
                         json.getJSONObject(i).getJSONObject("channel").getString("name"),
