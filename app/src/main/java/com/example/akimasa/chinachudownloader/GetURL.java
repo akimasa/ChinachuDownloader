@@ -25,7 +25,6 @@ import java.util.List;
 public class GetURL implements Runnable {
 
     android.content.Context ctx;
-    MainActivity that;
     Activity activity;
     boolean adaptercalled;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -33,7 +32,6 @@ public class GetURL implements Runnable {
 
     }
     public GetURL(MainActivity _that) {
-        this.that = _that;
         this.ctx = _that.ctx;
         this.activity = (Activity) _that;
         this.adaptercalled = _that.adaptercalled;

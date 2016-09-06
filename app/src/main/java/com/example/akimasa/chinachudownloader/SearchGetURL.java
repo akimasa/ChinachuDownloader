@@ -11,10 +11,8 @@ import java.util.List;
  * Created by akimasa on 16/09/04.
  */
 public class SearchGetURL extends GetURL{
-    SearchActivity that;
     CharSequence title;
     public SearchGetURL(SearchActivity _that,CharSequence _title) {
-        this.that = _that;
         this.title = _title;
         this.ctx = _that.ctx;
         this.activity = (Activity) _that;
