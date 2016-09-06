@@ -13,12 +13,8 @@ import java.util.List;
 public class SearchGetURL extends GetURL{
     CharSequence title;
     public SearchGetURL(SearchActivity _that,CharSequence _title) {
+        super(_that);
         this.title = _title;
-        this.ctx = _that.ctx;
-        this.activity = (Activity) _that;
-        this.adaptercalled = _that.adaptercalled;
-        this.mSwipeRefreshLayout = _that.mSwipeRefreshLayout;
-        Log.d("SearchGetURL",title.toString());
     }
 
 
