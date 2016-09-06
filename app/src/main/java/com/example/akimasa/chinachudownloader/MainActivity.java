@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
     android.content.Context ctx;
@@ -30,22 +32,9 @@ public class MainActivity extends AppCompatActivity {
         //mSwipeRefreshLayout.setColorScheme(R.color.red, R.color.green, R.color.blue, R.color.yellow);
 
         ListView listview = (ListView) findViewById(R.id.listView);
-        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                view.setFocusable(true);
-                view.setFocusableInTouchMode(true);
-                view.requestFocus();
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
 
         ctx = this;
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getApplication(),SettingsActivity.class);
@@ -53,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button2 = (Button) findViewById(R.id.button2);
+        final Button button2 = (Button) findViewById(R.id.button2);
 
 
 
@@ -84,6 +73,33 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(),SearchActivity.class);
                 intent.putExtra("title",title);
                 startActivity(intent);
+            }
+        });
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                view.setFocusable(true);
+                view.setFocusableInTouchMode(true);
+                view.requestFocus();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mSwipeRefreshLayout.getLayoutParams();
+                if(firstVisibleItem > 1){
+                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    mSwipeRefreshLayout.setLayoutParams(params); //causes layout update
+                    button.setVisibility(View.INVISIBLE);
+                    button2.setVisibility(View.INVISIBLE);
+                    edit.setVisibility(View.INVISIBLE);
+                } else {
+                    params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    mSwipeRefreshLayout.setLayoutParams(params); //causes layout update
+                    button.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    edit.setVisibility(View.VISIBLE);
+                }
+
             }
         });
 
