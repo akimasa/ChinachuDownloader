@@ -28,9 +28,7 @@ public class GetURL implements Runnable {
     Activity activity;
     boolean adaptercalled;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    public GetURL() {
-
-    }
+    
     public GetURL(MainActivity _that) {
         this.ctx = _that.ctx;
         this.activity = (Activity) _that;
